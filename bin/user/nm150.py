@@ -16,7 +16,7 @@
 #
 # See http://www.gnu.org/licenses/
 
-"""A weewx driver for New Mountain NMEA-0183-based stations.
+"""A weewx driver for New Mountain NM150 ultrasonic NMEA-0183-based stations.
 
 The New Mountain NM150 is an ultrasonic weather station with no moving parts:
 
