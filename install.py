@@ -4,12 +4,12 @@
 from setup import ExtensionInstaller
 
 def loader():
-    return Nm150Installer()
+    return NM150Installer()
 
 class NM150Installer(ExtensionInstaller):
     def __init__(self):
         super(NM150Installer, self).__init__(
-            version="0.1",
+            version="0.2",
             name='NM150',
             description='Capture weather data from New Mountain stations',
             author="Matthew Wall",
