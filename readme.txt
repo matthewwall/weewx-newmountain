@@ -3,6 +3,7 @@ weewx-newmountain
 This is a driver for weewx that collects data from New Mountain
 weather stations.
 
+  http://www.newmountain.com/acoustic-weather-station/
 
 Installation
 

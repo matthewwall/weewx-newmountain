@@ -20,7 +20,7 @@
 
 The New Mountain NM150 is an ultrasonic weather station with no moving parts:
 
-http://www.newmountain.com/acoustic-weather-station/
+  http://www.newmountain.com/acoustic-weather-station/
 
 This driver requires the pynmea library for NMEA0183 protocol:
   https://github.com/Knio/pynmea2
@@ -77,6 +77,10 @@ class NewMountain(weewx.drivers.AbstractDevice):
             self.serial_port.close()
             self.serial_port = None
 
+    @property
+    def hardware_name(self):
+        return 'NewMountain'
+
     def genLoopPackets(self):
         while True:
             try:
@@ -85,13 +89,18 @@ class NewMountain(weewx.drivers.AbstractDevice):
                 parsed = pynmea2.parse(wimda_packet)
                 logdbg("parsed: %s" % parsed)
                 packet = dict()
-                packet['usUnits'] = weewx.METRICWX
+                packet['usUnits'] = weewx.US
                 packet['dateTime'] = int(time.time() + 0.5)
-                packet['barometer'] = float(parsed.b_pressure_inch)
-                packet['outTemp'] = float(parsed.air_temp)
-                wind_speed_knots = (float(mda.wind_speed_knots), 'knot', 'group_speed')
-                wind_speed_mps = weewx.units.convert(wind_speed_knots, 'meter_per_second')[0]
-                packet['windSpeed'] = wind_speed_mps
+                packet['barometer'] = float(wimda.b_pressure_inch)
+                degree_C = (float(wimda.air_temp),
+                            'degree_C', 'group_temperature')
+                degree_F = weewx.units.convert(degree_C, 'degree_F')[0]
+                packet['outTemp'] = degree_F
+                wind_speed_knots = (
+                    float(mda.wind_speed_knots), 'knot', 'group_speed')
+                wind_speed_mph = weewx.units.convert(
+                    wind_speed_knots, 'mile_per_hour')[0]
+                packet['windSpeed'] = wind_speed_mph
                 packet['windDir'] = float(mda.direction_true)
                 logdbg("packet: %s" % packet)
                 yield packet
@@ -130,5 +139,5 @@ class NewMountainConfEditor(weewx.drivers.AbstractConfEditor):
 
 if __name__ == "__main__":
     with NewMountain(port=DEFAULT_PORT) as s:
-        for packet in s.genLoopPackets():
-            print repr(packet)
+        for pkt in s.genLoopPackets():
+            print repr(pkt)
