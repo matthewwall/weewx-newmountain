@@ -1,6 +1,6 @@
-weewx-newmountain
+weewx-nm150
 
-This is a driver for weewx that collects data from New Mountain
+This is a driver for weewx that collects data from New Mountain NM150
 weather stations.
 
   http://www.newmountain.com/acoustic-weather-station/
@@ -13,11 +13,11 @@ dpkg -i weewx_x.y.z-r.deb
 
 1) download the driver
 
-wget -O weewx-newmountain.zip https://github.com/matthewwall/weewx-newmountain/archive/master.zip
+wget -O weewx-nm150.zip https://github.com/matthewwall/weewx-nm150/archive/master.zip
 
 2) install the driver
 
-wee_extension --install weewx-newmountain.zip
+wee_extension --install weewx-nm150.zip
 
 3) configure the driver
 

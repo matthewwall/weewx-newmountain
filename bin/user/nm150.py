@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# NewMountain driver for weewx
+# NM150 driver for weewx
 #
 # Copyright 2016 Matthew Wall, all rights reserved
 #
@@ -39,18 +39,18 @@ import weewx
 import weewx.drivers
 import weewx.units
 
-DRIVER_NAME = 'NewMountain'
+DRIVER_NAME = 'NM150'
 DRIVER_VERSION = "0.2"
 
 
 def loader(config_dict, _):
-    return NewMountain(**config_dict[DRIVER_NAME])
+    return NM150(**config_dict[DRIVER_NAME])
 
 def confeditor_loader():
-    return NewMountainConfEditor()
+    return NM150ConfEditor()
 
 def logmsg(level, msg):
-    syslog.syslog(level, 'newmountain: %s' % msg)
+    syslog.syslog(level, 'nm150: %s' % msg)
 
 def logdbg(msg):
     logmsg(syslog.LOG_DEBUG, msg)
@@ -65,7 +65,7 @@ def logerr(msg):
 DEFAULT_PORT = '/dev/ttyUSB0'
 DEFAULT_BAUD = 4800
 
-class NewMountain(weewx.drivers.AbstractDevice):
+class NM150(weewx.drivers.AbstractDevice):
     def __init__(self, **stn_dict):
         port = stn_dict.get('port', DEFAULT_PORT)
         baudrate = int(stn_dict.get('baud', DEFAULT_BAUD))
@@ -79,7 +79,7 @@ class NewMountain(weewx.drivers.AbstractDevice):
 
     @property
     def hardware_name(self):
-        return 'NewMountain'
+        return 'NM150'
 
     def genLoopPackets(self):
         while True:
@@ -118,14 +118,14 @@ class NewMountain(weewx.drivers.AbstractDevice):
                 return matches.group(1)
 
 
-class NewMountainConfEditor(weewx.drivers.AbstractConfEditor):
+class NM150ConfEditor(weewx.drivers.AbstractConfEditor):
     @property
     def default_stanza(self):
         return """
-[NewMountain]
-    # This section is for the NewMountain weather station.
+[NM150]
+    # This section is for the NewMountain NM150 weather station.
     port = /dev/ttyUSB0
-    driver = weewx.drivers.NewMountain
+    driver = user.nm150
 """
 
     def prompt_for_settings(self):
@@ -135,9 +135,9 @@ class NewMountainConfEditor(weewx.drivers.AbstractConfEditor):
 
 
 # Test the driver by invoking it directly like this:
-#   PYTHONPATH=bin python bin/user/newmountain.py
+#   PYTHONPATH=bin python bin/user/nm150.py
 
 if __name__ == "__main__":
-    with NewMountain(port=DEFAULT_PORT) as s:
+    with NM150(port=DEFAULT_PORT) as s:
         for pkt in s.genLoopPackets():
             print repr(pkt)
