@@ -11,6 +11,10 @@ Installation
 
 dpkg -i weewx_x.y.z-r.deb
 
+0) install python NMEA library
+
+pip install pynmea2
+
 1) download the driver
 
 wget -O weewx-nm150.zip https://github.com/matthewwall/weewx-nm150/archive/master.zip
