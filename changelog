@@ -1,2 +1,7 @@
+0.3 08aug2016
+* fix missing import
+* fix wimda/parsed
+* add outHumidity
+
 0.2 22apr2016
 * initial packaging of jonathan lassoff's implementation

@@ -33,6 +33,7 @@ with older versions of Python.
 import pynmea2
 import re
 import serial
+import sys
 import syslog
 import time
 import weewx
@@ -40,7 +41,7 @@ import weewx.drivers
 import weewx.units
 
 DRIVER_NAME = 'NM150'
-DRIVER_VERSION = "0.2"
+DRIVER_VERSION = "0.3"
 
 
 def loader(config_dict, _):
@@ -91,17 +92,18 @@ class NM150(weewx.drivers.AbstractDevice):
                 packet = dict()
                 packet['usUnits'] = weewx.US
                 packet['dateTime'] = int(time.time() + 0.5)
-                packet['barometer'] = float(wimda.b_pressure_inch)
-                degree_C = (float(wimda.air_temp),
+                packet['barometer'] = float(parsed.b_pressure_inch)
+                degree_C = (float(parsed.air_temp),
                             'degree_C', 'group_temperature')
                 degree_F = weewx.units.convert(degree_C, 'degree_F')[0]
                 packet['outTemp'] = degree_F
                 wind_speed_knots = (
-                    float(mda.wind_speed_knots), 'knot', 'group_speed')
+                    float(parsed.wind_speed_knots), 'knot', 'group_speed')
                 wind_speed_mph = weewx.units.convert(
                     wind_speed_knots, 'mile_per_hour')[0]
                 packet['windSpeed'] = wind_speed_mph
-                packet['windDir'] = float(mda.direction_true)
+                packet['windDir'] = float(parsed.direction_true)
+                packet['outHumidity'] = float(parsed.rel_humidity)
                 logdbg("packet: %s" % packet)
                 yield packet
             except (ValueError, serial.serialutil.SerialException), e:

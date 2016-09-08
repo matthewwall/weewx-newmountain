@@ -9,7 +9,7 @@ def loader():
 class NM150Installer(ExtensionInstaller):
     def __init__(self):
         super(NM150Installer, self).__init__(
-            version="0.2",
+            version="0.3",
             name='NM150',
             description='Capture weather data from New Mountain stations',
             author="Matthew Wall",
